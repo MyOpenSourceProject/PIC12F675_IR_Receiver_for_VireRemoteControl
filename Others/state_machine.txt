@@ -1,0 +1,33 @@
+
+State Machine
+=============
+State machine is started here and it totally managed and keeps track of its 
+states using the varible NEC_POS here are the details of NEC_POS (NEC position) varible 
+
+if 
+	NEC_POS == 1 :-		We just detected the first edge of the input singal, it may also mean (if
+						interrupt is not false) that the 9ms leading pulse started after the first 
+						edge THE next pulse is expected to arrive around 9ms so the TIMEOUT is set 
+						to 11ms and PREPULSE is set to 8ms.
+				
+	NEC_POS == 2 :-		We just detected the second edge of the input signal and we finished the 9ms
+						leading pulse and now 4.5ms space started after the second edge the next pulse 
+						is expected to arrive around 4.5ms so TIMEOUT is set to 5.5ms and PREPULSE is 3ms.
+		
+	NEC_POS == 3 :-		We just detected the third edge of the input singal and we finished 4.5ms space 
+						and addres lsb is now started after the third edge the next pulse is expected to 
+						arrive around 562.5us so TIMEOUT is set to 2.3ms and PREPULSE is 0.2ms (timeout 
+						can be much less at this state but to do this i have to add one more if else 
+						statemetnt)
+		
+	NEC_POS == 4 :-		We just decected the fourth edge and the 562.5 us burt of LSB of address has ended now a 
+						little space for '0'562.5us  or for '1' 1.6875ms  after the forth edge the next pulse
+						is expected to arrive for '0' around 562.5us  and for '1' 1.675ms so TIMEOUT is set to 
+						2.3ms and PREPULSE is 0.2ms
+		
+	NEC_POS == 5 to 66 :-  Data pulse keep comming TIMOUT and PREPLUSE remain same as above.		   
+			
+	NEC_POS == 67 :-    We just fined the command inverse MSB space not the final 562.5us burst has stated  so we
+						fined the receiveing now we will check the address and command for being correct
+
+
